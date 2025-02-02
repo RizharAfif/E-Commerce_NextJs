@@ -23,6 +23,8 @@ export default function Home() {
           </div>
         </div>
 
+
+        {/* ini perubahan */}
         <div className="flex flex-col">
           <div className="flex justify-between mb-6">
             <div className="text-leaf text-3xl font-semibold">
