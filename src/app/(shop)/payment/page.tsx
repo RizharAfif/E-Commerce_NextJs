@@ -4,7 +4,7 @@ import Link from "next/link";
 // components
 import { Button } from "@/components/ui/button";
 import { IconCart } from "@/components/icons";
-import LogoBCA from "@/assets/images/logo-bca.png";
+import LogoBCA from "../../../assets/images/logo-bca.png";
 
 // utils
 import { cn } from "@/lib/utils";
