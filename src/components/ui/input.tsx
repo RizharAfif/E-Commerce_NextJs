@@ -41,7 +41,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           />
 
           {props.prefix && (
-            <div className="absolute top-1/2 py-[10px] px-3 text-sm">
+            <div className="absolute items-center py-[10px] px-3 text-sm">
               {_renderPrefixSuffix(props.prefix)}
             </div>
           )}
