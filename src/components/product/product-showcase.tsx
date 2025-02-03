@@ -2,14 +2,15 @@
 import Link from "next/link";
 
 // components
-import { ProductCard, ProductDetails } from "@/components/product/product-card";
+import { ProductCard } from "@/components/product/product-card";
 
 // utils
 import { cn } from "@/lib/utils";
+import { Product } from "@prisma/client";
 
 interface ShowcaseProps {
   gridConfig?: string;
-  products: ProductDetails[];
+  products: Product[];
 }
 
 const ProductShowcase: React.FC<ShowcaseProps> = ({
