@@ -59,7 +59,7 @@ function SignUpForm() {
       {/* Complete Name */}
       <div className="w-[100%] relative">
         <Input
-          className="w-[100%] p-4 rounded-sm"
+          className="w-[100%]"
           type="text"
           placeholder="Nama Lengkap"
           {...register("name")}
@@ -71,7 +71,7 @@ function SignUpForm() {
       {/* Email */}
       <div className="w-[100%] relative">
         <Input
-          className="w-[100%] p-4 rounded-sm"
+          className="w-[100%]"
           type="text"
           placeholder="Email"
           {...register("email")}
@@ -83,7 +83,7 @@ function SignUpForm() {
       {/* Password */}
       <div className="w-[100%] relative">
         <Input
-          className="w-[100%] p-4 rounded-sm"
+          className="w-[100%]"
           type={showPassword ? "text" : "password"}
           placeholder="Kata Sandi"
           suffix="Eye"
@@ -97,7 +97,7 @@ function SignUpForm() {
       {/* Confirmation Password */}
       <div className="w-[100%] relative">
         <Input
-          className="w-[100%] p-4 rounded-sm"
+          className="w-[100%]"
           type={showConfirmationPassword ? "text" : "password"}
           placeholder="Konfirmasi Kata Sandi"
           suffix="Eye"
