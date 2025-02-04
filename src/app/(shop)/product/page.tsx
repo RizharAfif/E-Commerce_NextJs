@@ -24,12 +24,16 @@ import { hover } from "@/lib/hover";
 
 // assets
 import ProductsJSON from "@/assets/json/products.json";
+import { useGetAllProductsQuery } from "@/services/product";
 
 export default function Products() {
   const isNoData = false;
 
   const [activePage, setActivePage] = useState(1);
   const [totalPage] = useState(5);
+
+  const { data, isLoading } = useGetAllProductsQuery({});
+  const { data: reccomendationProduct, isLoading: reccomentationIsLoading } = useGetAllProductsQuery({});
 
   return (
     <main className="flex flex-col w-full min-h-screen items-center pb-8">
@@ -73,7 +77,8 @@ export default function Products() {
               </div>
               <ProductShowcase
                 gridConfig={"grid-cols-3"}
-                products={ProductsJSON}
+                products={data?.data?.data || []}
+                isLoading={isLoading}
               />
 
               <div className="py-12">
@@ -102,7 +107,9 @@ export default function Products() {
             Lihat Selengkapnya {">"}
           </Link>
         </div>
-        <ProductShowcase gridConfig={"grid-cols-4"} products={ProductsJSON} />
+        <ProductShowcase gridConfig={"grid-cols-4"}
+          products={reccomendationProduct?.data?.data.slice(0,4) || []}
+          isLoading={reccomentationIsLoading} />
       </div>
     </main>
   );

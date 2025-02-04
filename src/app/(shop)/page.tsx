@@ -17,7 +17,7 @@ import ImageBanner from "@/assets/images/image-banner.png";
 import { useGetAllProductsQuery } from "@/services/product";
 
 export default function Home() {
-  const { data } = useGetAllProductsQuery({});
+  const { data, isLoading } = useGetAllProductsQuery({});
 
   return (
     <main className="flex flex-col w-full min-h-screen items-center pb-8">
@@ -44,7 +44,11 @@ export default function Home() {
               Lihat Selengkapnya {">"}
             </Link>
           </div>
-          <ProductShowcase gridConfig={"grid-cols-4"} products={data?.data?.slice(0,4) || []} />
+          <ProductShowcase 
+          gridConfig={"grid-cols-4"} 
+          products={data?.data?.data?.slice(0,4) || []}
+          isLoading={isLoading}
+          />
         </div>
 
         <div className="mt-8">
