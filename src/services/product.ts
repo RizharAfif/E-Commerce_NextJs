@@ -10,7 +10,7 @@ interface ProductResponse extends BaseResponse {
 }
 
 interface ProductAPIParams {
-  page?: number | undefined;
+  page?: string | undefined;
 }
 
 export const productApi = createApi({
