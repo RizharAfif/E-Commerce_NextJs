@@ -29,16 +29,22 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Products() {
   const isNoData = false;
+
+  const router = useRouter();
   const searchParams = useSearchParams();
 
   const [activePage, setActivePage] = useState(
-    parseInt(searchParams?.get("page") || "1") || 1);
+    parseInt(searchParams?.get("page") || "1") || 1
+  );
 
-  const router = useRouter();
   const { data, isLoading } = useGetAllProductsQuery({
-    page: searchParams.get("page") || undefined,
+    page: searchParams?.get("page") || undefined,
+    category: searchParams.get("category") || undefined,
+    min_price: searchParams.get("min_price") || undefined,
+    max_price: searchParams.get("max_price") || undefined,
+    rating: searchParams.get("rating") || undefined,
   });
-  const { data: reccomendationProduct, isLoading: reccomentationIsLoading } =
+  const { data: recommendationProducts, isLoading: recommendationisLoading } =
     useGetAllProductsQuery({});
 
   const handleChangeFilter = (key: string, value: string) => {
@@ -62,11 +68,56 @@ export default function Products() {
         <div className="flex-[1] border border-gray-300 rounded-xl py-6 px-4 h-fit">
           <div className="text-2xl font-semibold">Filter</div>
           <div className="w-full separator my-4" />
-          <FilterCategory />
+
+          {/* filter Category */}
+          <FilterCategory
+            value={searchParams.get("category")?.split(",")}
+            onChange={(selectedCategories) =>
+              handleChangeFilter("category", selectedCategories.join(","))
+            }
+          />
+          {/* End filter Category */}
+
+          {/* Gap */}
           <div className="w-full separator my-4" />
-          <FilterPrice />
+          {/* End Gap */}
+
+          {/* Filter Price  */}
+          <FilterPrice
+            value={{
+              min: searchParams?.get("min_price")
+                ? parseInt(searchParams.get("min_price") as string)
+                : undefined,
+              max: searchParams?.get("max_price")
+                ? parseInt(searchParams.get("max_price") as string)
+                : undefined,
+            }}
+            onChange={(price) => {
+              if (
+                price.min !== parseInt(searchParams?.get("min_price") as string)
+              ) {
+                handleChangeFilter("min_price", `${price.min}`);
+              } else {
+                handleChangeFilter("max_price", `${price.max}`);
+              }
+            }}
+          />
+          {/* EndFilter Price  */}
+
+          {/* Gap */}
           <div className="w-full separator my-4" />
-          <FilterRating />
+          {/* End Gap */}
+
+          {/* Filter Rating */}
+          <FilterRating
+            value={
+              searchParams.get("rating")
+                ? searchParams.get("rating")?.split(",")
+                : []
+            }
+            onChange={(selectedRating) => handleChangeFilter("rating", selectedRating.join(","))}
+          />
+          {/* End Filter Rating */}
         </div>
 
         <div className="flex-[3]">
@@ -130,8 +181,8 @@ export default function Products() {
         </div>
         <ProductShowcase
           gridConfig={"grid-cols-4"}
-          products={reccomendationProduct?.data?.data.slice(0, 4) || []}
-          isLoading={reccomentationIsLoading}
+          products={recommendationProducts?.data?.data.slice(0, 4) || []}
+          isLoading={recommendationisLoading}
         />
       </div>
     </main>
