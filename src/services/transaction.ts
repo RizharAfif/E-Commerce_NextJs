@@ -1,7 +1,5 @@
 import BaseResponse from "@/types/response";
-import { Checkout, Product,
-    // DeliveryType, Transaction 
-} from "@prisma/client";
+import { Checkout, Product, DeliveryType, Transaction } from "@prisma/client";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 
 interface CheckoutResponse extends BaseResponse {
@@ -21,9 +19,9 @@ interface CheckoutsResponse extends BaseResponse {
   }[];
 }
 
-// interface PaymentResponse extends BaseResponse {
-//   data: Transaction;
-// }
+interface PaymentResponse extends BaseResponse {
+  data: Transaction;
+}
 
 // interface CheckoutWithProduct {
 //   id: string;
@@ -63,12 +61,12 @@ interface CheckoutPayload {
   qty: number;
 }
 
-// interface PaymentPayload {
-//   application_fee: number;
-//   asurance_fee: number;
-//   delivery_fee: number;
-//   delivery_type: DeliveryType;
-// }
+interface PaymentPayload {
+  application_fee: number;
+  asurance_fee: number;
+  delivery_fee: number;
+  delivery_type: DeliveryType;
+}
 
 // interface HistoryAPIParams {
 //   page?: string | undefined;
@@ -95,26 +93,26 @@ export const transactionApi = createApi({
       }),
       providesTags: ["checkout"],
     }),
-    // payment: builder.mutation<PaymentResponse, PaymentPayload>({
-    //   query: (body) => ({
-    //     url: "/payment",
-    //     method: "POST",
-    //     body,
-    //   }),
-    //   invalidatesTags: ["transaction"],
-    // }),
-    // history: builder.query<HistoryResponse, HistoryAPIParams>({
-    //   query: () => ({
-    //     url: "/history",
-    //   }),
-    //   providesTags: ["transaction"],
-    // }),
+    payment: builder.mutation<PaymentResponse, PaymentPayload>({
+      query: (body) => ({
+        url: "/payment",
+        method: "POST",
+        body,
+      }),
+      //   invalidatesTags: ["transaction"],
+      // }),
+      // history: builder.query<HistoryResponse, HistoryAPIParams>({
+      //   query: () => ({
+      //     url: "/history",
+      //   }),
+      //   providesTags: ["transaction"],
+    }),
   }),
 });
 
 export const {
   useCheckoutMutation,
   useCheckoutsQuery,
-//   usePaymentMutation,
-//   useHistoryQuery,
+    usePaymentMutation,
+  //   useHistoryQuery,
 } = transactionApi;
