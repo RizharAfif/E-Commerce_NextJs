@@ -23,38 +23,38 @@ interface PaymentResponse extends BaseResponse {
   data: Transaction;
 }
 
-// interface CheckoutWithProduct {
-//   id: string;
-//   userId: string;
-//   productId: string;
-//   transactionId: string;
-//   qty: number;
-//   pricePerItem: number;
-//   createdAt: Date;
-//   updatedAt: Date;
-//   product: Product;
-// }
+interface CheckoutWithProduct {
+  id: string;
+  userId: string;
+  productId: string;
+  transactionId: string;
+  qty: number;
+  pricePerItem: number;
+  createdAt: Date;
+  updatedAt: Date;
+  product: Product;
+}
 
-// export interface TransactionWithCheckout {
-//   id: string;
-//   userId: string;
-//   totalPrice: number;
-//   deliveryFee: number;
-//   asuranceFee: number;
-//   applicationFee: number;
-//   grandTotalPrice: number;
-//   deliveryType: DeliveryType;
-//   createdAt: Date;
-//   updatedAt: Date;
-//   Checkout: CheckoutWithProduct[];
-// }
+export interface TransactionWithCheckout {
+  id: string;
+  userId: string;
+  totalPrice: number;
+  deliveryFee: number;
+  asuranceFee: number;
+  applicationFee: number;
+  grandTotalPrice: number;
+  deliveryType: DeliveryType;
+  createdAt: Date;
+  updatedAt: Date;
+  Checkout: CheckoutWithProduct[];
+}
 
-// interface HistoryResponse extends BaseResponse {
-//   data: {
-//     data: TransactionWithCheckout[];
-//     total: number;
-//   };
-// }
+interface HistoryResponse extends BaseResponse {
+  data: {
+    data: TransactionWithCheckout[];
+    total: number;
+  };
+}
 
 interface CheckoutPayload {
   product_id: string;
@@ -68,9 +68,9 @@ interface PaymentPayload {
   delivery_type: DeliveryType;
 }
 
-// interface HistoryAPIParams {
-//   page?: string | undefined;
-// }
+interface HistoryAPIParams {
+  page?: string | undefined;
+}
 
 export const transactionApi = createApi({
   reducerPath: "transactionApi",
@@ -99,13 +99,13 @@ export const transactionApi = createApi({
         method: "POST",
         body,
       }),
-      //   invalidatesTags: ["transaction"],
-      // }),
-      // history: builder.query<HistoryResponse, HistoryAPIParams>({
-      //   query: () => ({
-      //     url: "/history",
-      //   }),
-      //   providesTags: ["transaction"],
+      invalidatesTags: ["transaction"],
+    }),
+    history: builder.query<HistoryResponse, HistoryAPIParams>({
+      query: () => ({
+        url: "/history",
+      }),
+      providesTags: ["transaction"],
     }),
   }),
 });
@@ -113,6 +113,6 @@ export const transactionApi = createApi({
 export const {
   useCheckoutMutation,
   useCheckoutsQuery,
-    usePaymentMutation,
-  //   useHistoryQuery,
+  usePaymentMutation,
+  useHistoryQuery,
 } = transactionApi;
