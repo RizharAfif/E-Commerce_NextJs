@@ -41,7 +41,8 @@ export async function GET(){
     const session = await getServerSession(authOptions)
     const checkouts = await prisma.checkout.findMany({
         where:{
-            userId: session?.user.id
+            userId: session?.user.id,
+            transactionId: null
         },
         include:{
             product: true
