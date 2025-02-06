@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,22 +7,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum ProductCategory {
-  FUNGI
-  FRUIT
-  VEGETABLE
-  ONION
-  BEANS
-  SPICE
-}
-
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id          String        @id @default(cuid())
+  name        String
+  email       String        @unique
+  password    String
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+  Checkout    Checkout[]
+  Transaction Transaction[]
 
   @@map("users")
 }
@@ -41,6 +31,58 @@ model Product {
   category    ProductCategory
   createdAt   DateTime        @default(now()) @map("created_at")
   updatedAt   DateTime        @updatedAt @map("updated_at")
+  Checkout    Checkout[]
 
   @@map("products")
+}
+
+model Checkout {
+  id            String   @id @default(cuid())
+  userId        String   @map("user_id")
+  productId     String   @map("product_id")
+  transactionId String?   @map("transaction_id")
+  qty           Int      @default(0) @db.UnsignedInt
+  pricePerItem  Int      @default(0) @map("price_per_item") @db.UnsignedInt
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  product     Product     @relation(fields: [productId], references: [id])
+  user        User        @relation(fields: [userId], references: [id])
+  transaction Transaction? @relation(fields: [transactionId], references: [id])
+
+  @@index([productId], map: "checkouts_product_id_fkey")
+  @@index([userId], map: "checkouts_user_id_fkey")
+  @@map("checkouts")
+}
+
+model Transaction {
+  id              String       @id @default(cuid())
+  userId          String       @map("user_id")
+  totalPrice      Int          @default(0) @map("total_price") @db.UnsignedInt
+  deliveryFee     Int          @default(0) @map("delivery_fee") @db.UnsignedInt
+  asuraceFee      Int          @default(0) @map("asurance_fee") @db.UnsignedInt
+  applicationeFee Int          @default(0) @map("application_fee") @db.UnsignedInt
+  grandTotalPrice Int          @default(0) @map("grand_total_price") @db.UnsignedInt
+  deliveryType    DeliveryType @default(HOME_DELIVERY)
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+
+  user     User       @relation(fields: [userId], references: [id])
+  Checkout Checkout[]
+
+  @@map("transactions")
+}
+
+enum DeliveryType {
+  HOME_DELIVERY
+  STORE_PICKUP
+}
+
+enum ProductCategory {
+  FUNGI
+  FRUIT
+  VEGETABLE
+  ONION
+  BEANS
+  SPICE
 }
